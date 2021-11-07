@@ -22,7 +22,7 @@ add_executable(cpp_iz_2 main.c)
 target_link_libraries(cpp_iz_2 async_library)
 
 add_executable(unit_tests_sync unit_tests/main.cpp)
-target_link_libraries(unit_tests_sync sync_library ${GTEST_LIBRARIES} Threads::Threads gcov)
+target_link_libraries(unit_tests_sync sync_library ${GTEST_LIBRARIES} GTest::Main gcov)
 
 add_executable(unit_tests_async unit_tests/main.cpp)
-target_link_libraries(unit_tests_async async_library ${GTEST_LIBRARIES} Threads::Threads gcov)
+target_link_libraries(unit_tests_async async_library ${GTEST_LIBRARIES} GTest::Main gcov)
