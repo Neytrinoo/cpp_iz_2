@@ -11,6 +11,7 @@ matrix_t *create_matrix(int rows, int cols) {
 
     matrix->arr = malloc(sizeof(double *) * rows + sizeof(double) * rows * cols);
     if (matrix->arr == NULL) {
+        free(matrix);
         return NULL;
     }
 
