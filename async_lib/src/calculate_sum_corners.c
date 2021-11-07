@@ -1,9 +1,10 @@
 #include <pthread.h>
 #include <malloc.h>
+#include <unistd.h>
 
 #include "calculate_sum_corners.h"
 
-#define COUNT_THREADS 10
+#define COUNT_THREADS sysconf(_SC_NPROCESSORS_ONLN)
 
 double *calculate_sum_corners(matrix_t *matrix, int *length) {
     if (matrix == NULL || length == NULL || matrix->rows != matrix->cols) {
