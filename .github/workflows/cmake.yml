@@ -27,11 +27,11 @@ jobs:
     - name: Cppcheck check sync
       run: |
         sudo apt-get install -y cppcheck
-        cppcheck --enable=all --suppress=missingInclude sync_lib/src
+        cppcheck --enable=all --suppress=missingInclude --suppress=unusedFunction sync_lib/src
         
     - name: Cppcheck check async
       run: |
-        cppcheck --enable=all --suppress=missingInclude async_lib/src
+        cppcheck --enable=all --suppress=missingInclude --suppress=unusedFunction async_lib/src
       
     - name: Cmake build
       run: |
@@ -58,7 +58,7 @@ jobs:
     - name: Make gcovr artifacts sync
       uses: actions/upload-artifact@v2
       with:
-        name: Gcovr test
+        name: Gcovr test sync
         path: coverage-report-sync/
         
     - name: Build unit_tests_async
@@ -79,7 +79,7 @@ jobs:
     - name: Make gcovr artifacts async
       uses: actions/upload-artifact@v2
       with:
-        name: Gcovr test
+        name: Gcovr test async
         path: coverage-report-async/
         
     - name: Valgrind test sync
@@ -91,7 +91,7 @@ jobs:
     - name: Make valgrind artifacts sync
       uses: actions/upload-artifact@v2
       with:
-        name: Valgrind test
+        name: Valgrind test sync
         path: valgrind-report-sync/
         
     - name: Valgrind test async
@@ -102,5 +102,5 @@ jobs:
     - name: Make valgrind artifacts async
       uses: actions/upload-artifact@v2
       with:
-        name: Valgrind test
+        name: Valgrind test async
         path: valgrind-report-async/
