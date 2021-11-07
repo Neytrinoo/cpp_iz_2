@@ -6,12 +6,12 @@
 #define COUNT_THREADS 10
 
 double *calculate_sum_corners(matrix_t *matrix, int *length) {
-    pthread_t threads[COUNT_THREADS];
-    data_t thread_contexts[COUNT_THREADS];
-
     if (matrix == NULL || length == NULL || matrix->rows != matrix->cols) {
         return NULL;
     }
+
+    pthread_t threads[COUNT_THREADS];
+    data_t thread_contexts[COUNT_THREADS];
 
     *length = 2 * matrix->rows - 1;
     double *arr_of_sums = calloc(*length, sizeof(double));
