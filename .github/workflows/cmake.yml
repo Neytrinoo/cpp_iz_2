@@ -1,0 +1,98 @@
+name: CMake
+
+on:
+  pull_request:
+    branches: [ main ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Cpplint check
+      run: |
+        pip install cpplint
+        cpplint --extensions=c src/*
+      
+    - name: Cppcheck check
+      run: |
+        sudo apt-get install -y cppcheck
+        cppcheck --enable=all --suppress=missingInclude src/
+      
+    - name: Cmake build
+      run: |
+          sudo apt-get install -y gcovr
+          mkdir build && cd build
+          sudo apt-get install -y libgtest-dev
+          cmake ..
+        
+    - name: Build unit_tests_sync
+      run: |
+        cd build
+        make unit_tests_sync
+      
+    - name: Unit testing sync
+      run: |
+        cd build
+        ./unit_tests_sync
+        
+    - name: Gcovr test sync
+      run: |
+        mkdir coverage-report-sync && cd coverage-report-sync
+        gcovr -r ../ --html --html-details -o coverage_report_sync.html
+        
+    - name: Make gcovr artifacts sync
+      uses: actions/upload-artifact@v2
+      with:
+        name: Gcovr test
+        path: coverage-report-sync/
+        
+    - name: Build unit_tests_async
+      run: |
+        cd build
+        make unit_tests_async
+      
+    - name: Unit testing async
+      run: |
+        cd build
+        ./unit_tests_async
+        
+    - name: Gcovr test async
+      run: |
+        mkdir coverage-report-async && cd coverage-report-async
+        gcovr -r ../ --html --html-details -o coverage_report_async.html
+        
+    - name: Make gcovr artifacts async
+      uses: actions/upload-artifact@v2
+      with:
+        name: Gcovr test
+        path: coverage-report-async/
+        
+    - name: Valgrind test sync
+      run: |
+        sudo apt-get install -y valgrind
+        mkdir valgrind-report-sync
+        cd build
+        valgrind --tool=memcheck --leak-check=yes --log-file=../valgrind-report-sync/valgrind_report.txt ./unit_tests_sync
+    - name: Make valgrind artifacts sync
+      uses: actions/upload-artifact@v2
+      with:
+        name: Valgrind test
+        path: valgrind-report-sync/
+        
+    - name: Valgrind test async
+      run: |
+        mkdir valgrind-report-async
+        cd build
+        valgrind --tool=memcheck --leak-check=yes --log-file=../valgrind-report-async/valgrind_report.txt ./unit_tests_async
+    - name: Make valgrind artifacts async
+      uses: actions/upload-artifact@v2
+      with:
+        name: Valgrind test
+        path: valgrind-report-async/
