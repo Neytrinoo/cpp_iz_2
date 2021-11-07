@@ -15,15 +15,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - name: Cpplint check
+    - name: Cpplint check sync
       run: |
         pip install cpplint
-        cpplint --extensions=c src/*
+        cpplint --extensions=c sync_lib/src/*
+        
+    - name: Cpplint check async
+      run: |
+        cpplint --extensions=c async_lib/src/*
       
-    - name: Cppcheck check
+    - name: Cppcheck check sync
       run: |
         sudo apt-get install -y cppcheck
-        cppcheck --enable=all --suppress=missingInclude src/
+        cppcheck --enable=all --suppress=missingInclude sync_lib/src
+        
+    - name: Cppcheck check async
+      run: |
+        cppcheck --enable=all --suppress=missingInclude async_lib/src
       
     - name: Cmake build
       run: |
