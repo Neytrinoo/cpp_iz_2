@@ -34,11 +34,11 @@ double *calculate_sum_corners(matrix_t *matrix, int *length) {
 void sum_of_corner(matrix_t *matrix, int corner, double *res) {
     if (corner < matrix->rows) {
         for (int i = 0; i <= corner; ++i) {
-            *res += matrix->arr[i][matrix->rows - 1 - corner + i];
+            *res += matrix->arr[i * matrix->cols + (matrix->rows - 1 - corner + i)];
         }
     } else {
         for (int i = 1 + corner % matrix->rows; i < matrix->rows; ++i) {
-            *res += matrix->arr[i][matrix->rows - 1 - corner + i];
+            *res += matrix->arr[i * matrix->cols + (matrix->rows - 1 - corner + i)];
         }
     }
 }
