@@ -104,3 +104,15 @@ jobs:
       with:
         name: Valgrind test async
         path: valgrind-report-async/
+        
+    - name: Sync time test
+      run: |
+        cd build
+        make sync_time_test
+        ./sync_time_test
+        
+    - name: Async time test
+      run: |
+        cd build
+        make async_time_test
+        ./async_time_test
